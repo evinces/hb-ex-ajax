@@ -4,7 +4,7 @@
 // PART 1: SHOW A FORTUNE
 
 function showFortune() {
-    $.get('/fortune', (r) => $('#fortune-text').html(r));
+    $('#fortune-text').load('/fortune');
 }
 
 $('#get-fortune-button').on('click', showFortune);
@@ -17,11 +17,8 @@ $('#get-fortune-button').on('click', showFortune);
 
 function showWeather(e) {
     e.preventDefault();
-
-    let url = "/weather.json";
-    let formData = {"zipcode": $("#zipcode-field").val()};
-
-    $.get(url, formData, function (r) {
+    
+    $.get('/weather.json', $("#zipcode-field").serialize(), function (r) {
         $('#weather-info').html(r.forecast);
     });
 }
@@ -36,9 +33,7 @@ $("#weather-form").on('submit', showWeather);
 function orderMelons(e) {
     e.preventDefault();
 
-    let formData = $('#order-form').serialize();
-
-    $.post('/order-melons.json', formData, function (r) {
+    $.post('/order-melons.json', $('#order-form').serialize(), function (r) {
         $('#order-status').html(r['msg']);
         if (r['code'] === "ERROR") {
             $('#order-status').addClass('order-error');
